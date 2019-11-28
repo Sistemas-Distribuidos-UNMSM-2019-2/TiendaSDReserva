@@ -18,7 +18,7 @@ namespace TiendaSDReserva
             var config = new ConsumerConfig
             {
                 GroupId = "re",
-                BootstrapServers = "192.168.4.27:9092",
+                BootstrapServers = "192.168.4.25:9092",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
@@ -50,7 +50,7 @@ namespace TiendaSDReserva
                             OrdenCompraDAO ordenCompraDAO = new OrdenCompraDAO();
                             ordenCompraDAO.registrarOrdenCompra(ordenCompra);
 
-                            var config2 = new ProducerConfig { BootstrapServers = "192.168.4.27:9092" };
+                            var config2 = new ProducerConfig { BootstrapServers = "192.168.4.25:9092" };
 
                             Action<DeliveryReport<Null, string>> handler = r =>
                                 Console.WriteLine(!r.Error.IsError

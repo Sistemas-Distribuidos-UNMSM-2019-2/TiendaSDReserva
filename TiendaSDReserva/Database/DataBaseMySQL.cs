@@ -12,10 +12,10 @@ namespace TiendaSDReserva.Database
         public static DataBaseMySQL instancia;
 
         private MySqlConnection con;
-        private String servidor = "localhost";
+        private String servidor = "192.168.4.25";
         private String puerto = "3306";
         private String usuario = "root";
-        private String password = "cenpro";
+        private String password = "root";
         private String database = "sdtienda";
 
         private DataBaseMySQL()
