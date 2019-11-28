@@ -37,10 +37,42 @@ namespace TiendaSDReserva.ComponenteDatos
 
             dataBaseMySQL.CloseBD();
 
-            registrarDetalleOrdenCompra(ordenCompra.lDetalleCompra);
+            ordenCompra.nCodigoOrden = retornarCodigoOrdenCompra();
+
+            registrarDetalleOrdenCompra(ordenCompra.lDetalleCompra, ordenCompra.nCodigoOrden);
         }
 
-        private void registrarDetalleOrdenCompra(List<OrdenCompraDetalleModel> lDetalleCompra)
+        private int retornarCodigoOrdenCompra()
+        {
+            dataBaseMySQL.OpenBD();
+
+            int nCodigo = 0;
+
+            commandDatabase = new MySqlCommand();
+            commandDatabase.Connection = dataBaseMySQL.GetConnection();
+            commandDatabase.CommandType = CommandType.StoredProcedure;
+            commandDatabase.CommandText = "devolverCodigoOrdenCompra";
+
+            MySqlDataReader lector = commandDatabase.ExecuteReader();
+
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    nCodigo = lector.GetInt32(0);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No se encontraron datos.");
+            }
+
+            dataBaseMySQL.CloseBD();
+
+            return nCodigo;
+        }
+
+        private void registrarDetalleOrdenCompra(List<OrdenCompraDetalleModel> lDetalleCompra, int nCodigoOrden)
         {
             foreach (OrdenCompraDetalleModel auxiliar in lDetalleCompra)
             {
@@ -53,6 +85,7 @@ namespace TiendaSDReserva.ComponenteDatos
                 commandDatabase.Parameters.Add(new MySqlParameter("d1", auxiliar.nCodigoProducto));
                 commandDatabase.Parameters.Add(new MySqlParameter("d2", auxiliar.nCantidadProducto));
                 commandDatabase.Parameters.Add(new MySqlParameter("d3", auxiliar.nTotalParcial));
+                commandDatabase.Parameters.Add(new MySqlParameter("d4", nCodigoOrden));
 
                 commandDatabase.ExecuteNonQuery();
 

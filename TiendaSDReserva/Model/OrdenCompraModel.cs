@@ -9,6 +9,7 @@ namespace TiendaSDReserva.Model
     [Serializable]
     class OrdenCompraModel
     {
+        public int nCodigoOrden;
         public String sRucCliente;
         public double nPrecioTotal;
         public DateTime dFechaCompra;
